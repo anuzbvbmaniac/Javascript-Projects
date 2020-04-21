@@ -7,6 +7,12 @@ GAME RULES:
 - The player can choose to 'Hold', which means that his ROUND score gets added to his GLBAL score. After that, it's the next player's turn
 - The first player to reach 100 points on GLOBAL score wins the game
 
+YOUR 3 CHALLENGES
+Change the game to follow these rules:
+
+1. COMPLETE - A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable)
+2. COMPLETE - Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in JavaScript. This is a good opportunity to use google to figure this out :)
+3. COMPLETE - Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
 */
 
 let score, roundScore, activePlayer, isPlaying, previousRolledDice;
@@ -18,22 +24,36 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
     if (isPlaying) {
         // Generate Random Number
         let diceRolled = Math.floor(Math.random() * 6) + 1;
+        let secondDiceRolled = Math.floor(Math.random() * 6) + 1;
 
         // Display Result
         let diceImage = document.querySelector('.dice');
+        let secondDiceImage = document.querySelector('.dice1');
         diceImage.style.display = 'block';
+        secondDiceImage.style.display = 'block';
         diceImage.src = 'assets/img/dice-' + diceRolled + '.png';
+        secondDiceImage.src = 'assets/img/dice-' + secondDiceRolled + '.png';
 
         // Check if the player gets two 6 in a row or 1
-        if (diceRolled === 6 && previousRolledDice === 6) {
-            // If Player gets 6 in a row, their score is 0 and its next player turn.
-            showSnackBar('Two 6 in a row :(');
-            score[activePlayer] = 0;
-            document.querySelector('#score-' + activePlayer).textContent = '0';
-            nextPlayer();
-        } else if (diceRolled !== 1) {
+        // if (diceRolled === 6 && previousRolledDice === 6) {
+        //     // If Player gets 6 in a row, their score is 0 and its next player turn.
+        //     showSnackBar('Two 6 in a row :(');
+        //     score[activePlayer] = 0;
+        //     document.querySelector('#score-' + activePlayer).textContent = '0';
+        //     nextPlayer();
+        // } else if (diceRolled !== 1) {
+        //     // if dice rolled in not 1, update the round score value.
+        //     roundScore += diceRolled;
+        //     document.getElementById('current-' + activePlayer).textContent = roundScore;
+        // } else {
+        //     // if dice rolled is 1, change the turn to next player
+        //     showSnackBar('You rolled 1.');
+        //     nextPlayer();
+        // }
+
+        if (diceRolled !== 1 && secondDiceRolled !== 1) {
             // if dice rolled in not 1, update the round score value.
-            roundScore += diceRolled;
+            roundScore += diceRolled + secondDiceRolled;
             document.getElementById('current-' + activePlayer).textContent = roundScore;
         } else {
             // if dice rolled is 1, change the turn to next player
@@ -99,6 +119,7 @@ function init() {
 
     // do not show dice when starting a game.
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice1').style.display = 'none';
 
     // set UI value to 0.
     document.getElementById('score-0').textContent = '0';
@@ -133,6 +154,7 @@ function nextPlayer() {
     document.querySelector('.player-1-panel').classList.toggle('active');
 
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice1').style.display = 'none';
 }
 
 function showSnackBar(msg) {
@@ -148,12 +170,5 @@ function showSnackBar(msg) {
     }, 3000);
 }
 
-/*
-YOUR 3 CHALLENGES
-Change the game to follow these rules:
 
-1. COMPLETE - A player looses his ENTIRE score when he rolls two 6 in a row. After that, it's the next player's turn. (Hint: Always save the previous dice roll in a separate variable)
-2. COMPLETE - Add an input field to the HTML where players can set the winning score, so that they can change the predefined score of 100. (Hint: you can read that value with the .value property in JavaScript. This is a good opportunity to use google to figure this out :)
-3. COMPLETE in next js file - Add another dice to the game, so that there are two dices now. The player looses his current score when one of them is a 1. (Hint: you will need CSS to position the second dice, so take a look at the CSS code for the first one.)
-*/
 
