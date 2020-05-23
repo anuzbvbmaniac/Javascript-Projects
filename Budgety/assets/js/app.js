@@ -191,6 +191,12 @@ let UIController = (function () {
 
     }
 
+    let nodeListForEach = function (list, callback) {
+        for (let i = 0; i < list.length; i++ ) {
+            callback(list[i], i);
+        }
+    };
+
     return {
         // Get Inout Field Names
         getInput: function () {
@@ -289,12 +295,6 @@ let UIController = (function () {
 
             let fields = document.querySelectorAll(DOMStrings.expensePercentageLabel);
 
-            let nodeListForEach = function (list, callback) {
-                for (let i = 0; i < list.length; i++ ) {
-                    callback(list[i], i);
-                }
-            };
-
             nodeListForEach(fields, function (current, index) {
                 current.textContent = percentages[index];
             });
@@ -308,6 +308,24 @@ let UIController = (function () {
             month = today.getMonth();
             year = today.getFullYear();
             document.querySelector(DOMStrings.dateLabel).textContent = months[month] + ', ' + year;
+        },
+
+        //Change Color according to Type
+        changedType: function() {
+
+            let fields = document.querySelectorAll(
+                DOMStrings.inputType + ',' +
+                DOMStrings.inputDesc + ',' +
+                DOMStrings.inputValue
+            );
+
+            // Add Focus Border
+            nodeListForEach(fields, function (current) {
+                current.classList.toggle('red-focus');
+            });
+
+            document.querySelector(DOMStrings.btnAdd).classList.toggle('red');
+
         },
 
         // Get DOMStrings
@@ -337,6 +355,8 @@ let controller = (function (budgetCtrl, UICtrl) {
 
         // Event Listener on Delete Btn Click
         document.querySelector(DOMString.container).addEventListener('click', ctrlDeleteItem);
+
+        document.querySelector(DOMString.inputType).addEventListener('change', UIController.changedType);
     };
 
     // Update Budget Data
